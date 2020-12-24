@@ -4,6 +4,11 @@ namespace asinking\mongo;
 
 use asinking\mongo\MongoDriver;
 
+/**
+ * MongoDb操作类
+ * Class Mongo
+ * @package asinking\mongo
+ */
 class Mongo extends MongoDriver
 {
     public $connect = null;
