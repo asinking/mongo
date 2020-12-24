@@ -1,0 +1,14 @@
+{
+    "name": "asinking/mongo",
+    "description": "this is mongo query",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "xiaoqiang",
+            "email": "liuqiang@asinking.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
