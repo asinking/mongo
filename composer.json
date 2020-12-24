@@ -10,5 +10,11 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
+    }
 }
