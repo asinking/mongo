@@ -59,6 +59,8 @@ abstract class MongoDriver
         ];
         try {
             $this->_manager = new Manager($server, $options);
+//            $db = $this->_manager->admin;
+//            $db->authenticate($username, $password);
             if ($this->getIndexKeys()) {
                 $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
             }
@@ -81,13 +83,13 @@ abstract class MongoDriver
     /**
      * @param array $where
      * @param array $select
-     * @param array $sort
-     * @param int $start
+     * @param int|null $start
      * @param int|null $limit
+     * @param array $sort
      * @return array
      * @throws \MongoDB\Driver\Exception\Exception
      */
-    public function find(array $where = array(), array $select = ['_id' => 0], array $sort = array(), int $start, int $limit = null)
+    public function find(array $where = array(), array $select = ['_id' => 0],int $start = null, int $limit = null, array $sort = array())
     {
         $options = [
             'projection' => $select,
@@ -101,9 +103,6 @@ abstract class MongoDriver
         }
         $query = new Query($where, $options);
         $cursor = $this->_manager->executeQuery($this->getConnectDb() . "." . $this->getTable(), $query);
-        if ($this->isDebug()) {
-            echo json_encode(['todo' => '[query]', 'colName' => $this->getConnectDb() . "." . $this->getTable(), 'filter' => $where, 'projection' => $select, 'sort' => $sort, 'start' => $start, 'limit' => $limit]) . PHP_EOL;
-        }
         return empty($cursor) ? [] : $cursor->toArray();
     }
 
