@@ -16,51 +16,15 @@ abstract class MongoDriver
     private $_manager;
     private $_options;
 
-
     public function __construct()
     {
         $this->_options = $this->getDbConfig();
-        if (isset($this->_options['replicaSet'])) {
-            $this->connectCluster();
-        } else {
-            $this->connectServer();
-        }
-    }
-
-    /**
-     * 连接复制集
-     * @throws \Exception
-     */
-    protected function connectCluster()
-    {
-        $host = $this->_options['host'];
-        $port = $this->_options['port'];
-        $replicaSet = $this->_options['replicaSet'];
-        $server = "mongodb://" . $host . ":" . $port;
+        $serverUri = $this->_options['server_uri'];
         $options = [
             'connect' => TRUE,
-            "replicaSet" => $replicaSet,
         ];
         try {
-            $manager = new Manager($server, $options);
-        } catch (MongoException $e) {
-            throw new \Exception('Failed to connect mongodb [' . $server . ']', 500);
-        }
-        $this->_manager = $manager;
-    }
-
-    protected function connectServer()
-    {
-        $host = $this->_options['host'];
-        $port = $this->_options['port'];
-        $server = "mongodb://" . $host . ":" . $port;
-        $options = [
-            'connect' => TRUE
-        ];
-        try {
-            $this->_manager = new Manager($server, $options);
-//            $db = $this->_manager->admin;
-//            $db->authenticate($username, $password);
+            $this->_manager = new Manager($serverUri, $options);
             if ($this->getIndexKeys()) {
                 $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
             }
@@ -75,6 +39,9 @@ abstract class MongoDriver
         return call_user_func_array(array($this->_manager, $method), $args);
     }
 
+    /**
+     * @return MongoDriver
+     */
     public static function query()
     {
         return new static();
@@ -89,7 +56,7 @@ abstract class MongoDriver
      * @return array
      * @throws \MongoDB\Driver\Exception\Exception
      */
-    public function find(array $where = array(), array $select = ['_id' => 0],int $start = null, int $limit = null, array $sort = array())
+    public function find(array $where = array(), array $select = ['_id' => 0], int $start = null, int $limit = null, array $sort = array())
     {
         $options = [
             'projection' => $select,
@@ -187,12 +154,11 @@ abstract class MongoDriver
         $command = new Command([
             'count' => $this->getTable(),//集合名
             'query' => $filter,
-            'maxTimeMS' => 20000,
         ]);
         $cursor = $this->_manager->executeCommand($this->getConnectDb(), $command);
         if (empty($cursor)) return 0;
         $arr = $cursor->toArray();
-        return reset($arr)['n'];
+        return reset($arr)->n;
     }
 
     /**
@@ -209,7 +175,7 @@ abstract class MongoDriver
             'indexes' => [
                 [
                     'name' => "id_" . md5($indexKeys),
-                    'key' => $indexKeys,
+                    'key' => [$indexKeys => 1],
                     'unique' => $unique
                 ]
             ],
