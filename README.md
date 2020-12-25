@@ -13,14 +13,14 @@ class DcQueryDetails extends Mongo
     }
 
 }
-#插入数据数据
+# 插入数据数据
 DcQueryDetails::query()->insertOne($data);
 DcQueryDetails::query()->insertBatch($data);
 
-#更新数据数据
+# 更新数据数据
 DcQueryDetails::query()->update($where, $updatParams, $unsetParams, $incParams, $multi, $upsert);
 
-#删除数据操作
+# 删除数据操作
 DcQueryDetails::query()->delete($where, true);
 
 ....其它可参考内部方法
