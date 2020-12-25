@@ -1,6 +1,6 @@
 # mongo
 mongoQuery
-#构建数据查询模型
+# 构建数据查询模型
 class DcQueryDetails extends Mongo
 {
     public $connect = 'testDb';
