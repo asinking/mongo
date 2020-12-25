@@ -73,6 +73,11 @@ abstract class MongoDriver
         return call_user_func_array(array($this->_manager, $method), $args);
     }
 
+    public static function query()
+    {
+        return new static();
+    }
+
     /**
      * @param array $where
      * @param array $select
@@ -82,7 +87,7 @@ abstract class MongoDriver
      * @return array
      * @throws \MongoDB\Driver\Exception\Exception
      */
-    public function query(array $where = array(), array $select = ['_id' => 0], array $sort = array(), int $start, int $limit = null)
+    public function find(array $where = array(), array $select = ['_id' => 0], array $sort = array(), int $start, int $limit = null)
     {
         $options = [
             'projection' => $select,
