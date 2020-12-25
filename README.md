@@ -3,8 +3,8 @@ mongoQuery
 # 构建数据查询模型
 class DcQueryDetails extends Mongo
 {
-    public $connect = 'testDb';
-    public $table = 'table_name';
+###    public $connect = 'testDb';
+###    public $table = 'table_name';
 
 
     protected function getDbConfig(): array
