@@ -1,4 +1,5 @@
-# mongo 适用TP|Larvel|Lumen|Hyper等框架（遵循PSR-4协议）
+# mongo 
+适用TP|Larvel|Lumen|Hyper等框架（遵循PSR-4协议）
 mongoQuery
 # 构建数据查询模型
 ```javascript 
