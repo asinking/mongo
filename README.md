@@ -1,6 +1,6 @@
 # mongo 
-适用TP|Larvel|Lumen|Hyper等框架（遵循PSR-4协议）
 mongoQuery
+适用TP|Larvel|Lumen|Hyper等框架（遵循PSR-4协议）
 # 构建数据查询模型
 ```javascript 
 class DcQueryDetails extends Mongo
