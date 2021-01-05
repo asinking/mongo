@@ -74,15 +74,18 @@ abstract class MongoDriver
     }
 
     /**
+     * ser_number为分批数据添加序列化标记
      * @param array $params
+     * @param int $ser_number
      * @return int|null
      */
-    public function insertBatch(array $params = array())
+    public function insertBatch(array $params = array(), int $ser_number = -1)
     {
         if (empty($params)) return 0;
         $bulk = new BulkWrite;
         foreach ($params as $arr) {
             if (!is_array($arr)) continue;
+            if ($ser_number != -1) $arr['ser_number'] = $ser_number;
             $bulk->insert($arr);
         }
         $result = $this->_manager->executeBulkWrite($this->getConnectDb() . "." . $this->getTable(), $bulk);
