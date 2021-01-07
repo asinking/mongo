@@ -61,7 +61,7 @@ class Mongo extends MongoDriver
 
     protected function getIndexKeys(): string
     {
-        return $this->indexKey ?? "";
+        return $this->indexKey ?? null;
     }
 
     protected function isUniqueKey(): bool
