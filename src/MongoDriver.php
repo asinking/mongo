@@ -29,7 +29,7 @@ abstract class MongoDriver
                 $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
             }
         } catch (MongoException $e) {
-            throw new \Exception('Failed to connect mongodb [' . $server . ']', 500);
+            throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
         }
     }
 
@@ -72,6 +72,7 @@ abstract class MongoDriver
         $cursor = $this->_manager->executeQuery($this->getConnectDb() . "." . $this->getTable(), $query);
         return empty($cursor) ? [] : $cursor->toArray();
     }
+
 
     /**
      * ser_number为分批数据添加序列化标记
@@ -116,7 +117,7 @@ abstract class MongoDriver
      */
     public function update(array $where = array(), array $updatParams = array(), array $unsetParams = array(), array $incParams = array(), bool $multi = true, bool $upsert = false)
     {
-        if (empty($updatParams) && empty($updatParams) && empty($unsetParams)) return 0;
+        if (empty($updatParams) && empty($unsetParams) && empty($incParams)) return 0;
         if (!empty($updatParams)) $updateParams = ['$set' => $updatParams];
         if (!empty($unsetParams)) $updateParams['$unset'] = $unsetParams;
         if (!empty($incParams)) $updateParams['$inc'] = $incParams;
@@ -162,6 +163,22 @@ abstract class MongoDriver
         if (empty($cursor)) return 0;
         $arr = $cursor->toArray();
         return reset($arr)->n;
+    }
+
+    /**
+     * @param $pipeline
+     * @return array|mixed
+     * @throws \MongoDB\Driver\Exception\Exception
+     */
+    public function aggregate($pipeline)
+    {
+        $command = new Command([
+            'aggregate' => $this->getTable(),//集合名
+            'pipeline' => $pipeline,
+            'cursor' => new  \stdClass,
+        ]);
+        $cursor = $this->_manager->executeCommand($this->getConnectDb(), $command);
+        return empty($cursor) ? [] : json_decode(json_encode($cursor->toArray()), true);
     }
 
     /**
