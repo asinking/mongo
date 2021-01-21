@@ -205,6 +205,21 @@ abstract class MongoDriver
         return $response->ok == 1;
     }
 
+    /**
+     * 删除数据表
+     * @return bool
+     * @throws \MongoDB\Driver\Exception\Exception
+     */
+    public function dropDb()
+    {
+        $command = new Command([
+            'drop' => $this->getTable(),
+        ]);
+        $result = $this->_manager->executeCommand($this->getConnectDb(), $command);
+        $response = current($result->toArray());
+        return $response->ok == 1;
+    }
+
     public function dropIndex($indexKeys)
     {
         $command = new Command([
