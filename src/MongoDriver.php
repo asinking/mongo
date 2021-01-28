@@ -20,16 +20,21 @@ abstract class MongoDriver
     {
         $this->_options = $this->getDbConfig();
         $serverUri = $this->_options['server_uri'];
+        try {
+            $this->connect($serverUri);
+        } catch (MongoException $e) {
+            throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
+        }
+    }
+
+    private function connect($serverUri)
+    {
         $options = [
             'connect' => TRUE,
         ];
-        try {
-            $this->_manager = new Manager($serverUri, $options);
-            if ($this->getIndexKeys()) {
-                $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
-            }
-        } catch (MongoException $e) {
-            throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
+        $this->_manager = new Manager($serverUri, $options);
+        if ($this->getIndexKeys()) {
+            $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
         }
     }
 
