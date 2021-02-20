@@ -20,21 +20,16 @@ abstract class MongoDriver
     {
         $this->_options = $this->getDbConfig();
         $serverUri = $this->_options['server_uri'];
-        try {
-            $this->connect($serverUri);
-        } catch (MongoException $e) {
-            throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
-        }
-    }
-
-    private function connect($serverUri)
-    {
         $options = [
             'connect' => TRUE,
         ];
-        $this->_manager = new Manager($serverUri, $options);
-        if ($this->getIndexKeys()) {
-            $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
+        try {
+            $this->_manager = new Manager($serverUri, $options);
+            if ($this->getIndexKeys()) {
+                $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
+            }
+        } catch (MongoException $e) {
+            throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
         }
     }
 
@@ -94,6 +89,7 @@ abstract class MongoDriver
             if ($ser_number != -1) $arr['ser_number'] = $ser_number;
             $bulk->insert($arr);
         }
+        unset($params);
         $result = $this->_manager->executeBulkWrite($this->getConnectDb() . "." . $this->getTable(), $bulk);
         return $result->getInsertedCount();
     }
@@ -107,6 +103,7 @@ abstract class MongoDriver
         if (empty($params) || !is_array($params)) return 0;
         $bulk = new BulkWrite;
         $bulk->insert($params);
+        unset($params);
         $result = $this->_manager->executeBulkWrite($this->getConnectDb() . "." . $this->getTable(), $bulk);
         return $result->getInsertedCount();
     }

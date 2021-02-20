@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10c22778-36f4-4ab2-b50c-7dd2bb890244" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MongoDriver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/MongoDriver.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +29,6 @@
     <include_path>
       <path value="$PROJECT_DIR$/vendor/composer" />
     </include_path>
-  </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1930" />
-    <option name="y" value="26" />
-    <option name="width" value="1920" />
-    <option name="height" value="1040" />
   </component>
   <component name="ProjectId" id="1ngmuH0Xv1WOmyMOYfhdSZEqf8d" />
   <component name="ProjectViewState">
@@ -69,11 +64,22 @@
       <workItem from="1609992294044" duration="485000" />
       <workItem from="1610969254138" duration="203000" />
       <workItem from="1611225637925" duration="470000" />
-      <workItem from="1611820329635" duration="128000" />
+      <workItem from="1611820329635" duration="188000" />
+      <workItem from="1613826557475" duration="96000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2562" y="171" key="#PHP" timestamp="1613826581878">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2562" y="171" key="#PHP/0.0.1920.1040/1920.9.1920.1040@1920.9.1920.1040" timestamp="1613826581878" />
+    <state x="716" y="328" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1613826609255">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="716" y="328" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040/1920.9.1920.1040@0.0.1920.1040" timestamp="1613826609255" />
   </component>
 </project>
