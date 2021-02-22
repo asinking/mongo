@@ -25,9 +25,6 @@ abstract class MongoDriver
         ];
         try {
             $this->_manager = new Manager($serverUri, $options);
-            if ($this->getIndexKeys()) {
-                $this->ensureIndex($this->getIndexKeys(), $this->isUniqueKey());
-            }
         } catch (MongoException $e) {
             throw new \Exception('Failed to connect mongodb [' . $e->getMessage() . ']', 500);
         }
@@ -184,8 +181,8 @@ abstract class MongoDriver
     }
 
     /**
-     *
-     * @param $indexKeys
+     * 设置索引操作
+     * @param $indexKeys ['key01'=> 1]
      * @param bool $unique
      * @return bool
      * @throws \MongoDB\Driver\Exception\Exception
@@ -196,11 +193,29 @@ abstract class MongoDriver
             'createIndexes' => $this->getTable(),
             'indexes' => [
                 [
-                    'name' => "id_" . md5($indexKeys),
-                    'key' => [$indexKeys => 1],
+                    'name' => ($unique ? "uk_" : "idx_") . $indexKeys,
+                    'key' => $indexKeys,
                     'unique' => $unique
                 ]
             ],
+        ]);
+        $result = $this->_manager->executeCommand($this->getConnectDb(), $command);
+        $response = current($result->toArray());
+        return $response->ok == 1;
+    }
+
+    /**
+     * 删除索引操作
+     * @param $indexKeys
+     * @param bool $unique
+     * @return bool
+     * @throws \MongoDB\Driver\Exception\Exception
+     */
+    public function dropIndex($indexKeys, $unique = false)
+    {
+        $command = new Command([
+            'dropIndexes' => $this->getTable(),
+            'index' => ($unique ? "uk_" : "idx_") . $indexKeys
         ]);
         $result = $this->_manager->executeCommand($this->getConnectDb(), $command);
         $response = current($result->toArray());
@@ -216,17 +231,6 @@ abstract class MongoDriver
     {
         $command = new Command([
             'drop' => $this->getTable(),
-        ]);
-        $result = $this->_manager->executeCommand($this->getConnectDb(), $command);
-        $response = current($result->toArray());
-        return $response->ok == 1;
-    }
-
-    public function dropIndex($indexKeys)
-    {
-        $command = new Command([
-            'dropIndexes' => $this->getTable(),
-            'index' => "id_" . md5($indexKeys)
         ]);
         $result = $this->_manager->executeCommand($this->getConnectDb(), $command);
         $response = current($result->toArray());
@@ -251,7 +255,4 @@ abstract class MongoDriver
      */
     abstract protected function getDbConfig(): array;
 
-    abstract protected function getIndexKeys(): string;
-
-    abstract protected function isUniqueKey(): bool;
 }

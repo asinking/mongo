@@ -21,16 +21,6 @@ class Mongo extends MongoDriver
      * @var null
      */
     public $table = null;
-    /**
-     * 执行table表索引，设置参数可自动创建
-     * @var null
-     */
-    public $indexKey = null;
-    /**
-     * 是否设置为唯一索引，true=唯一索引false=普通索引
-     * @var bool
-     */
-    public $isUniqueKey = false;
 
     /**
      * 获取连接的数据库
@@ -59,13 +49,4 @@ class Mongo extends MongoDriver
         // TODO: Implement getDbConfig() method.
     }
 
-    protected function getIndexKeys(): string
-    {
-        return $this->indexKey ?? null;
-    }
-
-    protected function isUniqueKey(): bool
-    {
-        return $this->isUniqueKey;
-    }
 }
