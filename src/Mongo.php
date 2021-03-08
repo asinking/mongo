@@ -49,4 +49,14 @@ class Mongo extends MongoDriver
         // TODO: Implement getDbConfig() method.
     }
 
+    /**
+     * 设置表名称
+     * @param string $table
+     * @return mixed
+     */
+    protected function setTable(string $table)
+    {
+        $this->table = $table;
+    }
+
 }

@@ -37,11 +37,20 @@ abstract class MongoDriver
     }
 
     /**
+     * @param mixed ...$args
      * @return MongoDriver
+     * @throws \Exception
      */
-    public static function query()
+    public static function query(... $args)
     {
-        return new static();
+        $obj= new static();
+        if (!empty($args)) {
+            if(!is_numeric($args[0])) throw new \Exception("分库失败！");
+            $table = $obj->getTable();
+            $number = MurmurHashUtils::getTableSuffix($args[0]);
+            $obj->setTable($table . $number);
+        }
+        return $obj;
     }
 
     /**
@@ -248,6 +257,13 @@ abstract class MongoDriver
      * @return string
      */
     abstract protected function getTable(): string;
+
+    /**
+     * 设置表名称
+     * @param string $table
+     * @return mixed
+     */
+    abstract protected function setTable(string $table);
 
     /**
      * 获取DB配置
